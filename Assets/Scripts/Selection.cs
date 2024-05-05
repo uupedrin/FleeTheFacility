@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Selection : MonoBehaviour
@@ -9,9 +12,13 @@ public class Selection : MonoBehaviour
     [SerializeField] float offset;
     public List<GameObject> selectedItems = new List<GameObject>();
 
+    [SerializeField] RectTransform selectionBox;
+    Vector2 mouseStart;
+    [SerializeField] List<GameObject> unitList;
+
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -23,20 +30,32 @@ public class Selection : MonoBehaviour
         if(Input.GetButtonDown("Fire1")) 
         {
             selectedItems.Clear();
-            Debug.Log(selectedItems.Count);
+            selectionBox.gameObject.SetActive(true);
+            selectionBox.sizeDelta = Vector2.zero;
+            mouseStart = Input.mousePosition;
+            for(int i = 0; i < unitList.Count; i++)
+            {
+                unitList[i].tag =  "Unselected";
+            }
         }
-        if(Input.GetButton("Fire1")) MouseClicking();
+        if(Input.GetButton("Fire1")) 
+        {
+            BoxSize();
+            //MouseClicking();
+        }
         else if(Input.GetButtonUp("Fire1"))
         {
+            Debug.Log(selectedItems.Count);
+            selectionBox.sizeDelta = Vector2.zero;
+            selectionBox.gameObject.SetActive(false);
             for(int i = 0; i < selectedItems.Count; i++)
             {
-                selectedItems[i].layer = 0;
                 Debug.Log(selectedItems[i].name);
             }
         }
     }
 
-    void MouseClicking()
+    /*void MouseClicking()
     {
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, 1)) 
@@ -46,5 +65,27 @@ public class Selection : MonoBehaviour
         }
         Debug.Log(selectedItems.Count);
         Debug.DrawRay(transform.position, transform.forward * 1000, Color.red);
+    }*/
+
+    void BoxSize()
+    {
+        float width = Input.mousePosition.x - mouseStart.x;
+        float height = Input.mousePosition.y - mouseStart.y;
+        selectionBox.anchoredPosition = mouseStart + new Vector2(width/2, height/2);
+        selectionBox.sizeDelta = new Vector2(Math.Abs(width), Math.Abs(height));
+        Bounds bounds = new Bounds(selectionBox.anchoredPosition, selectionBox.sizeDelta);
+        for(int i = 0; i < unitList.Count; i++)
+        {
+            if(UnitIsInBox(Camera.main.WorldToScreenPoint(unitList[i].transform.position), bounds) && unitList[i].tag == "Unselected")
+            {
+                selectedItems.Add(unitList[i]);
+                unitList[i].tag =  "Selected";
+            }
+        }
+    }
+
+    bool UnitIsInBox(Vector2 position, Bounds bounds)
+    {
+        return position.x > bounds.min.x && position.x < bounds.max.x && position.y > bounds.min.y && position.y < bounds.max.y;
     }
 }
