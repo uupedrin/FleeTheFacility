@@ -15,6 +15,7 @@ public class Selection : MonoBehaviour
     [SerializeField] RectTransform selectionBox;
     Vector2 mouseStart;
     [SerializeField] List<GameObject> unitList;
+    public LayerMask unitMask;
 
     void Start()
     {
@@ -41,10 +42,10 @@ public class Selection : MonoBehaviour
         if(Input.GetButton("Fire1")) 
         {
             BoxSize();
-            //MouseClicking();
         }
         else if(Input.GetButtonUp("Fire1"))
         {
+            if(selectionBox.sizeDelta == Vector2.zero) QuickClick();
             Debug.Log(selectedItems.Count);
             selectionBox.sizeDelta = Vector2.zero;
             selectionBox.gameObject.SetActive(false);
@@ -55,17 +56,15 @@ public class Selection : MonoBehaviour
         }
     }
 
-    /*void MouseClicking()
+    void QuickClick()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, 1)) 
+        if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, unitMask)) 
         {
-            hit.transform.gameObject.layer = 1;
+            hit.transform.gameObject.tag = "Selected";
             selectedItems.Add(hit.transform.gameObject);
         }
-        Debug.Log(selectedItems.Count);
-        Debug.DrawRay(transform.position, transform.forward * 1000, Color.red);
-    }*/
+    }
 
     void BoxSize()
     {
