@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsPanel : MonoBehaviour
+public class SettingsPanel : Panel
 {
 	[SerializeField] Slider masterSlider, musicSlider, sfxSlider;
 	float masterVol, musicVol, sfxVol;
@@ -11,13 +11,6 @@ public class SettingsPanel : MonoBehaviour
 	{
 		Setup();
 	}
-	
-	void OnEnable()
-	{
-		AudioManager.instance.TryPlay2DEffect(2);
-		LeanTween.scale(gameObject,new Vector3(1,1,1), .5f).setEaseOutBack();
-	}
-	
 	
 	public void Setup()
 	{
@@ -73,16 +66,5 @@ public class SettingsPanel : MonoBehaviour
 	{
 		AudioManager.instance.mixer.SetFloat("SFXMix", value);
 		PlayerPrefsHandler.instance.SaveValue("SFXVol", value);
-	}
-	public void Close()
-	{
-		AudioManager.instance.TryPlay2DEffect(3);
-		LeanTween.scale(gameObject,Vector3.zero, .5f).setEaseInBack().setOnComplete(Disable);
-	}
-	
-	void Disable()
-	{
-		GameManager.instance.uiManager.ShowButtons();
-		gameObject.SetActive(false);
 	}
 }

@@ -9,6 +9,7 @@ public class MainMenuUI : UIManager
 {
 	public TMP_Text title;
 	public Button[] menuItems;
+	public float buttonDelay = .2f;
 	public GameObject transitionBoxes;
 	
 	void Start()
@@ -50,7 +51,7 @@ public class MainMenuUI : UIManager
 		for (int i = 0; i < menuItems.Count(); i++)
 		{
 			Vector3 originalMenuPos = menuItems[i].transform.position;
-			LeanTween.move(menuItems[i].gameObject, originalMenuPos + Vector3.up * 300, .35f).setEaseOutSine().setDelay(i * .5f);
+			LeanTween.move(menuItems[i].gameObject, originalMenuPos + Vector3.up * 300, .35f).setEaseOutSine().setDelay(i * buttonDelay);
 		}
 	}
 	
@@ -59,7 +60,7 @@ public class MainMenuUI : UIManager
 		for (int i = menuItems.Count() -1, j = 0; i >= 0; i--, j++)
 		{
 			Vector3 originalMenuPos = menuItems[i].transform.position;
-			LeanTween.move(menuItems[i].gameObject, originalMenuPos + Vector3.down * 300, .35f).setEaseInSine().setDelay(j * .5f);
+			LeanTween.move(menuItems[i].gameObject, originalMenuPos + Vector3.down * 300, .35f).setEaseInSine().setDelay(j * buttonDelay);
 		}
 	}
 	
