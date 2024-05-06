@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUI : UIManager
 {
@@ -70,12 +71,11 @@ public class MainMenuUI : UIManager
 		GameObject LowBox = transitionBoxes.transform.GetChild(1).gameObject;
 		
 		LeanTween.scaleY(UpBox, 1, 2).setEaseOutBounce();
-		LeanTween.scaleY(LowBox, 1, 2).setEaseOutBounce().setOnComplete(ChangeScene);
+		LeanTween.scaleY(LowBox, 1, 2).setEaseOutBounce().setOnComplete(GameScene);
 	}
 	
-	public void ChangeScene()
+	public void GameScene()
 	{
-		//Change Scene Here
-		QuitGame();
+		SceneManager.LoadScene("Game");
 	}
 }

@@ -37,18 +37,20 @@ public class AudioManager : MonoBehaviour
 		transform.SetParent(null);
 		DontDestroyOnLoad(gameObject);
 	}
-	
-	void Start()
+	public void CreateSFX()
 	{
 		for (int i = 0; i < sourceAmount2D; i++)
 		{
 			GameObject source = Instantiate(sfxSourcePrefab2D);
+			source.transform.parent = null;
 			source.SetActive(false);
 			source2DPool.Add(source);
 		}
 		for (int i = 0; i < sourceAmount3D; i++)
 		{
 			GameObject source = Instantiate(sfxSourcePrefab3D);
+			source.transform.parent = GameManager.instance.uiManager.transform;
+			source.transform.parent = null;
 			source.SetActive(false);
 			source3DPool.Add(source);
 		}

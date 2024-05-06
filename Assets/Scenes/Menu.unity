@@ -4789,6 +4789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed6cee5fd99fc945afdbf71dee7359b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  createSoundEffects: 1
   title: {fileID: 936222123}
   menuItems:
   - {fileID: 1857093915}
